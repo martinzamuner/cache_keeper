@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+VERSION=$1
+
+printf "module CacheKeeper\n  VERSION = \"$VERSION\"\nend\n" > ./lib/cache_keeper/version.rb
+bundle
+git add Gemfile.lock lib/cache_keeper/version.rb
+git commit -m "Bump version for $VERSION"
+git push
+git tag v$VERSION
+git push --tags
+gem build cache_keeper.gemspec
+gem push "cache_keeper-$VERSION.gem" --host https://rubygems.org
