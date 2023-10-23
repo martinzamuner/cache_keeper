@@ -3,17 +3,11 @@ module CacheKeeper
     attr_accessor :cached_methods
 
     def initialize
-      self.cached_methods = []
-    end
-
-    def find(klass, method_name)
-      cached_methods.find do |cached_method|
-        cached_method.klass == klass && cached_method.method_name == method_name
-      end
+      self.cached_methods = CacheKeeper::Store.new
     end
 
     def handled?(klass, method_name)
-      find(klass, method_name).present?
+      cached_methods.find_by(klass, method_name).present?
     end
 
     def handle(klass, method_name, options)
@@ -23,7 +17,7 @@ module CacheKeeper
     end
 
     def activate_if_handling(klass, method_name)
-      cached_method = find(klass, method_name) or return
+      cached_method = cached_methods.find_by(klass, method_name) or return
 
       return unless requires_activation?(cached_method)
 

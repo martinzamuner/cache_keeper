@@ -7,6 +7,7 @@ module CacheKeeper
   autoload :Configuration
   autoload :Manager
   autoload :ReplaceMethod
+  autoload :Store
 
   mattr_accessor :logger, default: ActiveSupport::TaggedLogging.new(ActiveSupport::Logger.new($stdout))
 
