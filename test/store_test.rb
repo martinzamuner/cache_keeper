@@ -8,4 +8,12 @@ class CacheKeeper::StoreTest < ActiveSupport::TestCase
 
     assert_equal autorefreshed_cached_method, store.find_by(String, :really_slow_method)
   end
+
+  test "#autorefreshed returns only the ones with the correct option" do
+    cached_method = CacheKeeper::CachedMethod.new(String, :slow_method, {})
+    autorefreshed_cached_method = CacheKeeper::CachedMethod.new(String, :really_slow_method, { autorefresh: true })
+    store = CacheKeeper::Store.new([cached_method, autorefreshed_cached_method])
+
+    assert_equal [autorefreshed_cached_method], store.autorefreshed
+  end
 end

@@ -10,4 +10,8 @@ class Recording < ApplicationRecord
   def another_method
     number
   end
+
+  def unsupported_method(parameter)
+    parameter * 2
+  end
 end

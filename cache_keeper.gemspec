@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.version  = CacheKeeper::VERSION
   s.authors  = ["Martin Zamuner"]
   s.email    = "martinzamuner@gmail.com"
-  s.summary  = "Keep a fresh copy of any method in your cache"
+  s.summary  = "Have your cached methods refreshed asynchronously and automatically"
   s.homepage = "https://github.com/martinzamuner/cache_keeper"
   s.license  = "MIT"
 

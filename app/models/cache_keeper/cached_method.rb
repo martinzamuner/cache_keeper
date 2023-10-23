@@ -13,6 +13,10 @@ class CacheKeeper::CachedMethod
     :"__#{method_name}__hooked__"
   end
 
+  def stale?
+    cache_entry.blank? || cache_entry.expired?
+  end
+
   def call(instance)
     if cache_entry.blank?
       refresh instance

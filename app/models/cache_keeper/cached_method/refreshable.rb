@@ -5,7 +5,9 @@ module CacheKeeper::CachedMethod::Refreshable
     end
   end
 
-  def refresh_later(instance)
+  def refresh_later(instance = nil)
+    instance ||= klass.new
+
     CacheKeeper::RefreshJob.perform_later self, instance
   end
 end

@@ -3,7 +3,7 @@
   <br>
 </h1>
 
-<h3 align="center">Keep cached methods always fresh in your Rails application.</h3>
+<h3 align="center">Have your cached methods refreshed asynchronously and automatically.</h3>
 
 <p align="center">
   <img alt="Build" src="https://img.shields.io/github/actions/workflow/status/martinzamuner/cache_keeper/ci.yml?branch=main">
@@ -12,7 +12,7 @@
   <img alt="License" src="https://img.shields.io/github/license/martinzamuner/cache_keeper">
 </p>
 
-CacheKeeper allows you to mark any method to be kept fresh in your Rails cache. It uses ActiveJob to refresh the cache in the background.
+CacheKeeper is a Rails gem that allows you to mark any method to be kept fresh in your cache. It uses ActiveJob to refresh the cache in the background, either on demand or periodically.
 
 
 ## Installation
@@ -33,9 +33,21 @@ caches :slow_method, :really_slow_method, expires_in: 1.hour
 caches :incredibly_slow_method, expires_in: 2.hours, must_revalidate: true
 ```
 
-It is automatically available in your ActiveRecord models and in your controllers. You can also use it in any other class by including `CacheKeeper::Caching`.
+It's automatically available in your ActiveRecord models and in your controllers. You can also use it in any other class by including `CacheKeeper::Caching`.
 
 By default, it will immediately run the method call if it hasn't been cached before. The next time it is called, it will return the cached value if it hasn't expired yet. If it has expired, it will enqueue a job to refresh the cache in the background and return the stale value in the meantime. You can avoid returning stale values by setting `must_revalidate: true` in the options.
+
+It's important to note that it will only work with methods that don't take any arguments.
+
+### Autorefresh
+
+You can tell CacheKeeper to automatically refresh the cache after a certain amount of time by setting the `autorefresh` option:
+
+```ruby
+caches :i_cant_even, expires_in: 2.hours, autorefresh: true
+```
+
+This works by running a job in cron mode that will periodically check for stale entries and enqueue a job to refresh them. You need to specify an adapter as explained in the configuration section below.
 
 
 ## Configuration
@@ -51,6 +63,15 @@ Rails.application.configure do
   # The queue to use for the refresh jobs.
   # Default: nil (uses the default queue)
   config.cache_keeper.queues.refresh = :low_priority
+
+  # The adapter to use for the autorefresh cron job.
+  # Options: :good_job
+  # Default: nil
+  config.cache_keeper.cron.adapter = :good_job
+
+  # The cron expression to use for the autorefresh cron job.
+  # Default: "*/15 * * * *" (every 15 minutes)
+  config.cache_keeper.cron.expression = "0 * * * *"
 end
 ```
 
