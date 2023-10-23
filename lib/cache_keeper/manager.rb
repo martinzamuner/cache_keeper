@@ -26,8 +26,8 @@ class CacheKeeper::Manager
 
     return unless requires_activation?(cached_method)
 
-    CacheKeeper::ReplaceMethod.replace(cached_method) do |*args|
-      cached_method.call(self, *args)
+    CacheKeeper::ReplaceMethod.replace(cached_method) do
+      cached_method.call(self)
     end
   end
 

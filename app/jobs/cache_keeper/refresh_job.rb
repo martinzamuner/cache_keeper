@@ -1,9 +1,7 @@
-class CacheKeeper::RefreshJob < ActiveJob::Base
-  queue_as { CacheKeeper.queues[:refresh] }
+class CacheKeeper::RefreshJob < CacheKeeper::BaseJob
+  queue_as { CacheKeeper.configuration.queues[:refresh] }
 
-  discard_on ActiveRecord::RecordNotFound
-
-  def perform(cached_method)
-    cached_method.refresh
+  def perform(cached_method, instance)
+    cached_method.refresh instance
   end
 end
