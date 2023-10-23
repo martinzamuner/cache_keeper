@@ -32,7 +32,7 @@ class CacheKeeper::CachedMethod
   private
 
   def cache_entry
-    Rails.cache.send :read_entry, Rails.cache.send(:normalize_key, cache_key)
+    Rails.cache.send :read_entry, Rails.cache.send(:normalize_key, cache_key, {})
   end
 
   def cache_key
