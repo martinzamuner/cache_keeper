@@ -2,15 +2,10 @@ module CacheKeeper
   class Engine < ::Rails::Engine
     isolate_namespace CacheKeeper
 
+    config.eager_load_namespaces << CacheKeeper
+
     config.cache_keeper = ActiveSupport::OrderedOptions.new
     config.cache_keeper.queues = ActiveSupport::OrderedOptions.new
-
-    config.eager_load_namespaces << CacheKeeper
-    config.autoload_once_paths = %W(
-      #{root}/app/jobs
-      #{root}/app/models
-      #{root}/app/serializers
-    )
 
     initializer "cache_keeper.active_job_serializer" do |app|
       config.to_prepare do
