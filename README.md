@@ -39,6 +39,24 @@ By default, it will immediately run the method call if it hasn't been cached bef
 
 It's important to note that it will only work with methods that don't take any arguments.
 
+### Serialization
+
+CacheKeeper needs to pass the instance on which the cached method is called along to the refresh job. As any other job argument, ActiveJob requires it to be serializable. ActiveRecord instances are serializable by default, but controllers, POROs and other classes are not. CacheKeeper provides a `serializer` option that will work in most cases:
+
+```ruby
+class Example
+  # Generate a new instance using an empty initializer (Example.new)
+  # Useful for controllers and for POROs with no arguments
+  caches :slow_method, serializer: :new_instance
+
+  # Replicate the old instance using Marshal.dump and Marshal.load
+  # Useful in most other cases, but make sure the dump is not too big
+  caches :slow_method, serializer: :marshal
+end
+```
+
+If those options don't work for you, you can always [write custom serializer](https://guides.rubyonrails.org/active_job_basics.html#serializers) for your classes.
+
 
 ## Configuration
 

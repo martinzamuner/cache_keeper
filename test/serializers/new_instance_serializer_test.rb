@@ -1,10 +1,6 @@
 require "test_helper"
 
-class CacheKeeper::WhateverSerializerTest < ActiveSupport::TestCase
-  test "serializes whatever" do
-    assert serializer.serialize?(RecordingsController.new)
-  end
-
+class CacheKeeper::NewInstanceSerializerTest < ActiveSupport::TestCase
   test "serializes the class name" do
     serialized = serializer.serialize(RecordingsController.new)
 
@@ -21,6 +17,6 @@ class CacheKeeper::WhateverSerializerTest < ActiveSupport::TestCase
   private
 
   def serializer
-    CacheKeeper::WhateverSerializer
+    CacheKeeper::NewInstanceSerializer
   end
 end

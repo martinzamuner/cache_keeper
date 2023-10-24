@@ -29,7 +29,7 @@ module CacheKeeper
         end
 
         CacheKeeper::ReplaceMethod.replace(cached_method) do
-          cached_method.call(self)
+          instance_variable_get(:"@#{method_name}") || instance_variable_set(:"@#{method_name}", cached_method.call(self))
         end
       end
     end

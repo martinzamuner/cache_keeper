@@ -1,5 +1,6 @@
 class CacheKeeper::CachedMethod
   include Refreshable
+  include SerializableTarget
 
   attr_accessor :klass, :method_name, :options
 
@@ -17,14 +18,14 @@ class CacheKeeper::CachedMethod
     cache_entry.blank? || cache_entry.expired?
   end
 
-  def call(instance)
+  def call(target)
     if cache_entry.blank?
-      refresh instance
+      refresh target
     elsif cache_entry.expired?
       if must_revalidate?
-        refresh instance
+        refresh target
       else
-        refresh_later instance
+        refresh_later target
 
         cache_entry.value
       end
