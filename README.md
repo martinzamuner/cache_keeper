@@ -39,16 +39,6 @@ By default, it will immediately run the method call if it hasn't been cached bef
 
 It's important to note that it will only work with methods that don't take any arguments.
 
-### Autorefresh
-
-You can tell CacheKeeper to automatically refresh the cache after a certain amount of time by setting the `autorefresh` option:
-
-```ruby
-caches :i_cant_even, expires_in: 2.hours, autorefresh: true
-```
-
-This works by running a job in cron mode that will periodically check for stale entries and enqueue a job to refresh them. You need to specify an adapter as explained in the configuration section below.
-
 
 ## Configuration
 
@@ -63,15 +53,6 @@ Rails.application.configure do
   # The queue to use for the refresh jobs.
   # Default: nil (uses the default queue)
   config.cache_keeper.queues.refresh = :low_priority
-
-  # The adapter to use for the autorefresh cron job.
-  # Options: :good_job
-  # Default: nil
-  config.cache_keeper.cron.adapter = :good_job
-
-  # The cron expression to use for the autorefresh cron job.
-  # Default: "*/15 * * * *" (every 15 minutes)
-  config.cache_keeper.cron.expression = "0 * * * *"
 end
 ```
 

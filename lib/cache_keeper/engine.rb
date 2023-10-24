@@ -4,7 +4,6 @@ module CacheKeeper
 
     config.cache_keeper = ActiveSupport::OrderedOptions.new
     config.cache_keeper.queues = ActiveSupport::OrderedOptions.new
-    config.cache_keeper.cron = ActiveSupport::OrderedOptions.new
 
     config.eager_load_namespaces << CacheKeeper
     config.autoload_once_paths = %W(
@@ -16,12 +15,6 @@ module CacheKeeper
     initializer "cache_keeper.active_job_serializer" do |app|
       config.to_prepare do
         Rails.application.config.active_job.custom_serializers << CacheKeeper::CachedMethodSerializer
-      end
-    end
-
-    initializer "cache_keeper.cron_adapter" do |app|
-      config.to_prepare do
-        CacheKeeper.configuration.cron_adapter&.setup
       end
     end
 

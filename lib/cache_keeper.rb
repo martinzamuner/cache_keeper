@@ -8,7 +8,6 @@ module CacheKeeper
   autoload :Manager
   autoload :ReplaceMethod
   autoload :Store
-  autoload :Cron
 
   mattr_accessor :logger, default: ActiveSupport::TaggedLogging.new(ActiveSupport::Logger.new($stdout))
 
