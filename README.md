@@ -29,13 +29,29 @@ bundle add cache_keeper
 CacheKeeper provides a `caches` method that will cache the result of the methods you give it:
 
 ```ruby
-caches :slow_method, :really_slow_method, expires_in: 1.hour
-caches :incredibly_slow_method, expires_in: 2.hours, must_revalidate: true
+class Recording < ApplicationRecord
+  caches :slow_method, :really_slow_method, expires_in: 1.hour, must_revalidate: true
+  caches :incredibly_slow_method, expires_in: 2.hours, key: -> { "custom-key/#{id}" }
+
+  def slow_method
+    ...
+  end
+
+  def really_slow_method
+    ...
+  end
+
+  def incredibly_slow_method
+    ...
+  end
+end
 ```
 
 It's automatically available in your ActiveRecord models and in your controllers. You can also use it in any other class by including `CacheKeeper::Caching`.
 
 By default, it will immediately run the method call if it hasn't been cached before. The next time it is called, it will return the cached value if it hasn't expired yet. If it has expired, it will enqueue a job to refresh the cache in the background and return the stale value in the meantime. You can avoid returning stale values by setting `must_revalidate: true` in the options.
+
+CacheKeeper will compose cache keys from the name of the method and the instance's `cache_key` if it's defined or the name of the class otherwise. You can pass a `key` option to customize the cache key if you need it. It accepts [the same values](https://guides.rubyonrails.org/caching_with_rails.html#cache-keys) as `Rails.cache.fetch`, as well as procs or lambdas in case you need access to the instance.
 
 It's important to note that it will only work with methods that don't take any arguments.
 

@@ -14,11 +14,9 @@ class CacheKeeper::CachedMethod
     :"__#{method_name}__hooked__"
   end
 
-  def stale?
-    cache_entry.blank? || cache_entry.expired?
-  end
-
   def call(target)
+    cache_entry = cache_entry(target)
+
     if cache_entry.blank?
       refresh target
     elsif cache_entry.expired?
@@ -36,12 +34,16 @@ class CacheKeeper::CachedMethod
 
   private
 
-  def cache_entry
-    Rails.cache.send :read_entry, Rails.cache.send(:normalize_key, cache_key, {})
+  def cache_entry(target)
+    Rails.cache.send :read_entry, Rails.cache.send(:normalize_key, cache_key(target), {})
   end
 
-  def cache_key
-    ["CacheKeeper", klass, method_name]
+  def cache_key(target)
+    if options[:key].present?
+      options[:key].is_a?(Proc) ? target.instance_exec(&options[:key]) : options[:key]
+    else
+      target.respond_to?(:cache_key) ? ["CacheKeeper", target, method_name] : ["CacheKeeper", klass, method_name]
+    end
   end
 
   def expires_in

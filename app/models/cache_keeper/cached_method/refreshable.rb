@@ -1,6 +1,6 @@
 module CacheKeeper::CachedMethod::Refreshable
   def refresh(target)
-    Rails.cache.fetch(cache_key, expires_in: expires_in) do
+    Rails.cache.fetch(cache_key(target), expires_in: expires_in) do
       target.send alias_for_original_method
     end
   end
