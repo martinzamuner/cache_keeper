@@ -55,7 +55,7 @@ class Example
 end
 ```
 
-If those options don't work for you, you can always [write custom serializer](https://guides.rubyonrails.org/active_job_basics.html#serializers) for your classes.
+If those options don't work for you, you can always [write custom serializers](https://guides.rubyonrails.org/active_job_basics.html#serializers) for your classes.
 
 
 ## Configuration

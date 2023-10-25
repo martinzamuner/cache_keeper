@@ -1,5 +1,7 @@
 *.gem
+Gemfile.lock
 .byebug_history
+TAGS
 
 test/dummy/db/*.sqlite3
 test/dummy/db/*.sqlite3*

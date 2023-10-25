@@ -1,0 +1,122 @@
+require:
+  - rubocop-rails
+  - rubocop-performance
+
+AllCops:
+  Exclude:
+    - '**/db/**/*'
+    - '**/config/**/*'
+    - '**/tmp/**/*'
+    - '**/templates/**/*'
+    - '**/vendor/**/*'
+    - '**/node_modules/**/*'
+  TargetRubyVersion: 3.2.2
+
+# Relaxed Ruby Style
+Style/Alias:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#stylealias
+
+Style/AsciiComments:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#styleasciicomments
+
+Style/BeginBlock:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#stylebeginblock
+
+Style/BlockDelimiters:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#styleblockdelimiters
+
+Style/Documentation:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#styledocumentation
+
+Style/EndBlock:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#styleendblock
+
+Style/GuardClause:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#styleifunlessmodifier
+
+Style/ModuleFunction:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#stylemodulefunction
+
+Style/MultilineBlockChain:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#stylemultilineblockchain
+
+Style/NegatedIf:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#stylenegatedif
+
+Style/NegatedWhile:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#stylenegatedwhile
+
+Style/NumericPredicate:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#stylenumericpredicate
+
+Style/PercentLiteralDelimiters:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#stylepercentliteraldelimiters
+
+Style/WhileUntilModifier:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#stylewhileuntilmodifier
+
+Style/WordArray:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#stylewordarray
+
+Lint/AmbiguousRegexpLiteral:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#lintambiguousregexpliteral
+
+Lint/AssignmentInCondition:
+  Enabled: false
+  StyleGuide: https://relaxed.ruby.style/#lintassignmentincondition
+
+Layout/LineLength:
+  Enabled: false
+
+Metrics:
+  Enabled: false
+
+# Custom
+Performance:
+  Exclude:
+    - '**/spec/**/*'
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/AndOr:
+  Enabled: true
+  EnforcedStyle: conditionals
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/HashSyntax:
+  Enabled: false
+
+Style/MixinGrouping:
+  Enabled: false
+
+Style/RegexpLiteral:
+  Enabled: false
+
+Style/StringConcatenation:
+  Enabled: false
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: double_quotes

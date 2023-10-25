@@ -1,7 +1,7 @@
 module CacheKeeper
   class Configuration
     DEFAULT_MUST_REVALIDATE = false
-    DEFAULT_QUEUES = {}
+    DEFAULT_QUEUES = {}.freeze
 
     def must_revalidate
       return rails_config.must_revalidate unless rails_config.must_revalidate.nil?
