@@ -59,6 +59,8 @@ CacheKeeper will compose cache keys from the name of the method and the instance
 
 ```ruby
 class NebulaNoodleTwister
+  include CacheKeeper::Caching
+
   caches :twist_noodles, :dish_of_the_day, key: ->(method_name) { [:recoding, id, method_name] }
   caches :synchronize_taste_buds, key: -> { [:recoding, id, :synchronize_taste_buds] }
   caches :space_soup_simulation, key: :space_soup_simulation
@@ -71,6 +73,8 @@ CacheKeeper needs to pass the instance on which the cached method is called alon
 
 ```ruby
 class QuantumQuackerator
+  include CacheKeeper::Caching
+
   # Generate a new instance using an empty initializer (QuantumQuackerator.new)
   # Useful for controllers and for POROs with no arguments
   caches :quackify_particles, serializer: :new_instance

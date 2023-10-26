@@ -5,7 +5,7 @@ class CacheKeeper::MarshalSerializerTest < ActiveSupport::TestCase
     target = Recording.new
     serialized = serializer.serialize(target)
 
-    assert_equal serialized["dump"], Marshal.dump(target).force_encoding("ISO-8859-1").encode("UTF-8")
+    assert_equal serialized["dump"], Base64.encode64(Marshal.dump(target))
   end
 
   test "deserializes the marshal dump" do
