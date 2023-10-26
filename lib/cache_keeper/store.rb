@@ -8,7 +8,7 @@ module CacheKeeper
 
     def autorefreshed
       select do |cached_method|
-        cached_method.options[:autorefresh].present?
+        cached_method.autorefresh_block.present?
       end
     end
   end

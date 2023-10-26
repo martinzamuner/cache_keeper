@@ -3,9 +3,9 @@ module CacheKeeper
     extend ActiveSupport::Concern
 
     included do
-      def self.caches(*method_names, **options)
+      def self.caches(*method_names, **options, &block)
         method_names.each do |method_name|
-          CacheKeeper.manager.handle self, method_name, options
+          CacheKeeper.manager.handle self, method_name, options, &block
 
           # If the method is already defined, we need to hook it
           method_added method_name

@@ -10,8 +10,8 @@ module CacheKeeper
       cached_methods.find_by(klass, method_name).present?
     end
 
-    def handle(klass, method_name, options)
-      CacheKeeper::CachedMethod.new(klass, method_name, options).tap do |cached_method|
+    def handle(klass, method_name, options, &block)
+      CacheKeeper::CachedMethod.new(klass, method_name, options, &block).tap do |cached_method|
         if unsupported_options?(cached_method)
           raise "You're trying to autorefresh an ActiveRecord model, which we don't currently support."
         end

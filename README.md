@@ -29,19 +29,19 @@ bundle add cache_keeper
 CacheKeeper provides a `caches` method that will cache the result of the methods you give it:
 
 ```ruby
-class Recording < ApplicationRecord
-  caches :slow_method, :really_slow_method, expires_in: 1.hour
-  caches :incredibly_slow_method, expires_in: 2.hours, must_revalidate: true
+class AlienAnecdoteAmplifier < ApplicationRecord
+  caches :amplify, :enhance_hilarity, expires_in: 1.hour
+  caches :generate_anecdotal_tales, expires_in: 2.hours, must_revalidate: true
 
-  def slow_method
+  def amplify
     ...
   end
 
-  def really_slow_method
+  def enhance_hilarity
     ...
   end
 
-  def incredibly_slow_method
+  def generate_anecdotal_tales
     ...
   end
 end
@@ -62,8 +62,6 @@ class NebulaNoodleTwister
   caches :twist_noodles, :dish_of_the_day, key: ->(method_name) { [:recoding, id, method_name] }
   caches :synchronize_taste_buds, key: -> { [:recoding, id, :synchronize_taste_buds] }
   caches :space_soup_simulation, key: :space_soup_simulation
-
-  ...
 end
 ```
 
@@ -75,15 +73,41 @@ CacheKeeper needs to pass the instance on which the cached method is called alon
 class QuantumQuackerator
   # Generate a new instance using an empty initializer (QuantumQuackerator.new)
   # Useful for controllers and for POROs with no arguments
-  caches :slow_method, serializer: :new_instance
+  caches :quackify_particles, serializer: :new_instance
 
   # Replicate the old instance using Marshal.dump and Marshal.load
   # Useful in most other cases, but make sure the dump is not too big
-  caches :slow_method, serializer: :marshal
+  caches :quackify_particles, serializer: :marshal
 end
 ```
 
 If those options don't work for you, you can always [write custom serializers](https://guides.rubyonrails.org/active_job_basics.html#serializers) for your classes.
+
+### Autorefresh
+
+CacheKeeper can automatically refresh your cached methods so that they are always warm. You need to pass a block to the `caches` method that will be called periodically. It will receive a `cached_method` object that you can use to `autorefresh` the cache for a specific instance:
+
+```ruby
+class LaughInducingLuminator < ApplicationRecord
+  caches :generate_chuckles, expires_in: 1.day do |cached_method|
+    find_each do { |luminator| cached_method.autorefresh luminator }
+  end
+end
+```
+
+The last step is to register the `CacheKeeper::AutorefreshJob` in whatever system you use to run jobs periodically. For example, if you use [GoodJob](https://github.com/bensheldon/good_job) you would do something like this:
+
+```ruby
+Rails.application.configure do
+  config.good_job.enable_cron = true
+  config.good_job.cron = {
+    cache_keeper: {
+      cron: "*/15 * * * *", # every 15 minutes, every day
+      class: "CacheKeeper::AutorefreshJob"
+    }
+  }
+end
+```
 
 
 ## Configuration

@@ -8,4 +8,10 @@ module CacheKeeper::CachedMethod::Refreshable
   def refresh_later(target)
     CacheKeeper::RefreshJob.perform_later self, target
   end
+
+  def autorefresh(target)
+    return unless stale?(target)
+
+    refresh_later target
+  end
 end

@@ -2,16 +2,21 @@ class CacheKeeper::CachedMethod
   include Refreshable
   include SerializableTarget
 
-  attr_accessor :klass, :method_name, :options
+  attr_accessor :klass, :method_name, :options, :autorefresh_block
 
-  def initialize(klass, method_name, options = {})
+  def initialize(klass, method_name, options = {}, &block)
     self.klass = klass
     self.method_name = method_name
     self.options = options.with_indifferent_access
+    self.autorefresh_block = block
   end
 
   def alias_for_original_method
     :"__#{method_name}__hooked__"
+  end
+
+  def stale?(target)
+    cache_entry(target).blank? || cache_entry(target).expired?
   end
 
   def call(target)
