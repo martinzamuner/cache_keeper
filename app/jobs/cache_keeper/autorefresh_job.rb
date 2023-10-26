@@ -3,7 +3,7 @@ class CacheKeeper::AutorefreshJob < CacheKeeper::BaseJob
 
   def perform
     CacheKeeper.manager.cached_methods.autorefreshed.each do |cached_method|
-      cached_method.autorefresh_block.call
+      cached_method.autorefresh_block.call cached_method
     end
   end
 end
