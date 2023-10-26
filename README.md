@@ -123,6 +123,10 @@ Rails.application.configure do
   # The queue to use for the refresh jobs.
   # Default: nil (uses the default queue)
   config.cache_keeper.queues.refresh = :low_priority
+
+  # The parent class of the refresh jobs.
+  # Default: "ActiveJob::Base"
+  config.cache_keeper.active_job_parent_class = "ApplicationJob"
 end
 ```
 

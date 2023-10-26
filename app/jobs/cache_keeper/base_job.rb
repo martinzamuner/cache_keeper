@@ -1,4 +1,4 @@
-class CacheKeeper::BaseJob < ActiveJob::Base
+class CacheKeeper::BaseJob < CacheKeeper::ActiveJobParentClass
   discard_on StandardError
 
   private
