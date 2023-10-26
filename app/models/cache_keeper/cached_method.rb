@@ -39,8 +39,14 @@ class CacheKeeper::CachedMethod
   end
 
   def cache_key(target)
-    if options[:key].present?
-      options[:key].is_a?(Proc) ? target.instance_exec(&options[:key]) : options[:key]
+    if options[:key].is_a?(Proc)
+      if options[:key].arity == 1
+        target.instance_exec(method_name, &options[:key])
+      else
+        target.instance_exec(&options[:key])
+      end
+    elsif options[:key].present?
+      options[:key]
     else
       target.respond_to?(:cache_key) ? ["CacheKeeper", target, method_name] : ["CacheKeeper", klass, method_name]
     end
