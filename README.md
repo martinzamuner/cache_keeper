@@ -47,7 +47,7 @@ class AlienAnecdoteAmplifier < ApplicationRecord
 end
 ```
 
-It's automatically available in your ActiveRecord models and in your controllers. You can also use it in any other class by including `CacheKeeper::Caching`.
+It's automatically available in your ActiveRecord models. You can also use it in any other class by including `CacheKeeper::Caching`.
 
 By default, it will immediately run the method call if it hasn't been cached before. The next time it is called, it will return the cached value if it hasn't expired yet. If it has expired, it will enqueue a job to refresh the cache in the background and return the stale value in the meantime. You can avoid returning stale values by setting `must_revalidate: true` in the options.
 

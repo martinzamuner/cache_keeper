@@ -13,11 +13,7 @@ module CacheKeeper
       end
     end
 
-    initializer "cache_keeper.caching_methods" do
-      ActiveSupport.on_load :action_controller do
-        ActionController::Base.send :include, CacheKeeper::Caching
-      end
-
+    initializer "cache_keeper.active_record_initializer" do
       ActiveSupport.on_load :active_record do
         include CacheKeeper::Caching
       end
