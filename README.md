@@ -14,7 +14,6 @@
 
 CacheKeeper is a Rails gem that allows you to mark any method to be kept fresh in your cache. It uses ActiveJob to refresh the cache in the background, either on demand or periodically.
 
-
 ## Installation
 
 Add CacheKeeper to your Gemfile:
@@ -22,7 +21,6 @@ Add CacheKeeper to your Gemfile:
 ```sh
 bundle add cache_keeper
 ```
-
 
 ## Usage
 
@@ -47,11 +45,9 @@ class AlienAnecdoteAmplifier < ApplicationRecord
 end
 ```
 
-It's automatically available in your ActiveRecord models. You can also use it in any other class by including `CacheKeeper::Caching`.
-
 By default, it will immediately run the method call if it hasn't been cached before. The next time it is called, it will return the cached value if it hasn't expired yet. If it has expired, it will enqueue a job to refresh the cache in the background and return the stale value in the meantime. You can avoid returning stale values by setting `must_revalidate: true` in the options.
 
-It's important to note that it will only work with methods that don't take any arguments.
+It's automatically available in your ActiveRecord models. You can also use it in any other class by including `CacheKeeper::Caching`. It's important to note that it will only work with methods that don't take any arguments.
 
 ### Cache key
 
@@ -61,8 +57,8 @@ CacheKeeper will compose cache keys from the name of the method and the instance
 class NebulaNoodleTwister
   include CacheKeeper::Caching
 
-  caches :twist_noodles, :dish_of_the_day, key: ->(method_name) { [:recoding, id, method_name] }
-  caches :synchronize_taste_buds, key: -> { [:recoding, id, :synchronize_taste_buds] }
+  caches :twist_noodles, :dish_of_the_day, key: ->(method_name) { [:twister, id, method_name] }
+  caches :synchronize_taste_buds, key: -> { [:twister, id, :synchronize_taste_buds] }
   caches :space_soup_simulation, key: :space_soup_simulation
 end
 ```
@@ -94,7 +90,7 @@ CacheKeeper can automatically refresh your cached methods so that they are alway
 ```ruby
 class LaughInducingLuminator < ApplicationRecord
   caches :generate_chuckles, expires_in: 1.day do |cached_method|
-    find_each do { |luminator| cached_method.autorefresh luminator }
+    find_each { |luminator| cached_method.autorefresh luminator }
   end
 end
 ```
@@ -112,7 +108,6 @@ Rails.application.configure do
   }
 end
 ```
-
 
 ## Configuration
 
@@ -134,15 +129,13 @@ Rails.application.configure do
 end
 ```
 
-
 ## Development
 
 <details>
   <summary>Running the tests</summary><br>
 
-  - You can run the whole suite with `./bin/test test/**/*_test.rb`
+- You can run the whole suite with `./bin/test test/**/*_test.rb`
 </details>
-
 
 ## License
 
